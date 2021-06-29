@@ -61,13 +61,14 @@ function Child() {
 }
 
 function App() {
+
   console.log('%cApp: render start', 'color: MediumSpringGreen')
 
   const [showChild, setShowChild] = React.useState(() => {
     console.log('%cApp: useState(() => false)', 'color: tomato')
     return false
   })
-
+	
   React.useEffect(() => {
     console.log('%cApp: useEffect(() => {})', 'color: LightCoral')
     return () => {
@@ -86,7 +87,8 @@ function App() {
   }, [])
 
   React.useEffect(() => {
-    console.log('%cApp: useEffect(() => {}, [showChild])', 'color: HotPink')
+    console.log('%cApp: useEffect(() => {}, [showChild])', 'color: HotPink');
+		console.log(`%cApp: useEffect(() => {}, [${showChild}])`, 'color: HotPink')
     return () => {
       console.log(
         '%cApp: useEffect(() => {}, [showChild]) cleanup 🧹',
