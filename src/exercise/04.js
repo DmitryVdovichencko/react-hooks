@@ -5,12 +5,15 @@ import * as React from 'react'
 
 function Board() {
   // 🐨 squares is the state for this component. Add useState for squares
-  const squares = Array(9).fill(null)
+  const [ squares, setSquares ] = React.useState(Array(9).fill(null));
 
   // 🐨 We'll need the following bits of derived state:
   // - nextValue ('X' or 'O')
+	const nextValue = calculateNextValue(squares);
   // - winner ('X', 'O', or null)
+	const winner = calculateWinner(squares);
   // - status (`Winner: ${winner}`, `Scratch: Cat's game`, or `Next player: ${nextValue}`)
+	const status = calculateStatus(winner, squares, nextValue)
   // 💰 I've written the calculations for you! So you can use my utilities
   // below to create these variables
 
@@ -20,17 +23,23 @@ function Board() {
     // 🐨 first, if there's already winner or there's already a value at the
     // given square index (like someone clicked a square that's already been
     // clicked), then return early so we don't make any state changes
-    //
+    if(winner || squares[square]){
+			console.log({ square, winner });
+			return
+		}
+
     // 🦉 It's typically a bad idea to mutate or directly change state in React.
     // Doing so can lead to subtle bugs that can easily slip into production.
     //
     // 🐨 make a copy of the squares array
     // 💰 `[...squares]` will do it!)
-    //
+    const squaresCopy = [...squares];
     // 🐨 set the value of the square that was selected
     // 💰 `squaresCopy[square] = nextValue`
-    //
+    squaresCopy[square] = nextValue;
+		console.log({newSquares:squaresCopy})
     // 🐨 set the squares to your copy
+		setSquares(squaresCopy);
   }
 
   function restart() {
@@ -49,7 +58,7 @@ function Board() {
   return (
     <div>
       {/* 🐨 put the status in the div below */}
-      <div className="status">STATUS</div>
+      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
@@ -93,6 +102,7 @@ function calculateStatus(winner, squares, nextValue) {
 
 // eslint-disable-next-line no-unused-vars
 function calculateNextValue(squares) {
+	console.log('calculating nextValue',squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O')
   return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O'
 }
 
